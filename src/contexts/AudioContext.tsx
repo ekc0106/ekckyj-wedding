@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useRef, useState, useCallback, useEffect } from 'react';
 
 interface AudioContextType {
-  audioRef: React.RefObject<HTMLAudioElement> | null;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   muted: boolean;
   setMuted: (muted: boolean) => void;
   isVideoPlaying: boolean;
@@ -66,7 +66,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           if (isIOS) {
             const retryPlay = () => {
               audioRef.current?.play().catch(e => console.warn("재시도 실패:", e));
-              document.removeEventListener('touchstart', retryPlay, { once: true });
+              document.removeEventListener('touchstart', retryPlay);
             };
             document.addEventListener('touchstart', retryPlay, { once: true });
           }
