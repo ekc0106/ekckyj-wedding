@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useAudio } from "../contexts/AudioContext";
 
 export default function AudioPlayer() {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [muted, setMuted] = useState(false); // 시작은 음소거 해제
+  const { audioRef, muted, isVideoPlaying, toggleMute } = useAudio();
 
   useEffect(() => {
+    if (!audioRef) return;
     const audio = audioRef.current;
     if (audio) {
       // 페이지 로드 시 자동재생 시도
@@ -20,27 +21,42 @@ export default function AudioPlayer() {
             audio.play().catch(err => {
               console.warn("재생 실패:", err);
             });
-            setMuted(false);
             document.removeEventListener("click", enableSound);
             document.removeEventListener("touchstart", enableSound);
           };
           document.addEventListener("click", enableSound, { once: true });
           document.addEventListener("touchstart", enableSound, { once: true });
         });
-        setMuted(false);
       };
       
       // 즉시 재생 시도
       playAudio();
     }
-  }, []);
+  }, [audioRef]);
 
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !muted;
-      setMuted(!muted);
+  // 비디오 재생 상태에 따른 오디오 관리 (iOS 대응)
+  useEffect(() => {
+    if (!audioRef) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isVideoPlaying) {
+      // 비디오 재생 시 배경음악 일시정지
+      audio.pause();
+      console.log("비디오 재생 중 - 배경음악 일시정지");
+    } else {
+      // 비디오 정지 시 배경음악 재개 (음소거 상태가 아닐 때만)
+      if (!muted) {
+        // iOS에서 안정적인 재생을 위해 약간의 딜레이 추가
+        setTimeout(() => {
+          audio.play().catch(err => {
+            console.warn("배경음악 재개 실패:", err);
+          });
+          console.log("비디오 정지 - 배경음악 재개");
+        }, 100);
+      }
     }
-  };
+  }, [isVideoPlaying, muted, audioRef]);
 
   return (
     <div style={{ position: "fixed", top: "1rem", left: "1rem", zIndex: 2000 }}>

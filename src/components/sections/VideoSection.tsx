@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { weddingConfig } from '../../config/wedding-config';
+import { useAudio } from '../../contexts/AudioContext';
 
 interface VideoSectionProps {
   bgColor?: 'white' | 'beige';
@@ -10,6 +11,8 @@ interface VideoSectionProps {
 
 const VideoSection = ({ bgColor = 'white' }: VideoSectionProps) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const { setIsVideoPlaying } = useAudio();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // 동영상이 설정되지 않은 경우 섹션을 렌더링하지 않음
   if (!weddingConfig.video?.enabled || !weddingConfig.video?.url) {
@@ -21,13 +24,72 @@ const VideoSection = ({ bgColor = 'white' }: VideoSectionProps) => {
   };
 
   // Vimeo iframe이 로드되지 않는 경우를 대비한 타이머
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsVideoLoaded(true);
     }, 3000); // 3초 후 강제로 로딩 완료 처리
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Vimeo Player API를 통한 비디오 재생 상태 감지
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    // Vimeo Player API를 사용하여 재생 상태 감지
+    const handleMessage = (event: MessageEvent) => {
+      // Vimeo에서 오는 메시지만 처리
+      if (event.origin !== 'https://player.vimeo.com') return;
+
+      try {
+        const data = JSON.parse(event.data);
+        
+        if (data.event === 'play') {
+          console.log('Vimeo 비디오 재생 시작');
+          setIsVideoPlaying(true);
+        } else if (data.event === 'pause' || data.event === 'ended') {
+          console.log('Vimeo 비디오 정지/종료');
+          setIsVideoPlaying(false);
+        }
+      } catch (err) {
+        // JSON 파싱 실패 시 무시
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    // iframe이 로드되면 Vimeo Player API 이벤트 구독
+    const setupVimeoListeners = () => {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          method: 'addEventListener',
+          value: 'play'
+        }), 'https://player.vimeo.com');
+
+        iframe.contentWindow.postMessage(JSON.stringify({
+          method: 'addEventListener',
+          value: 'pause'
+        }), 'https://player.vimeo.com');
+
+        iframe.contentWindow.postMessage(JSON.stringify({
+          method: 'addEventListener',
+          value: 'ended'
+        }), 'https://player.vimeo.com');
+      }
+    };
+
+    // iframe 로드 후 이벤트 리스너 설정
+    if (iframe.contentWindow) {
+      setupVimeoListeners();
+    }
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      // 컴포넌트 언마운트 시 비디오 재생 상태 초기화
+      setIsVideoPlaying(false);
+    };
+  }, [setIsVideoPlaying]);
 
   return (
     <VideoSectionContainer $bgColor={bgColor}>
@@ -49,6 +111,7 @@ const VideoSection = ({ bgColor = 'white' }: VideoSectionProps) => {
           
           <VideoContainer>
             <VideoIframe
+              ref={iframeRef}
               src={`${weddingConfig.video.url}?autoplay=0&loop=0&muted=0&controls=1&responsive=1`}
               title="웨딩 영상"
               frameBorder="0"
