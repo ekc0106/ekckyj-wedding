@@ -40,8 +40,8 @@ const LoadingSpinner = styled.div`
 
 /* ─────────────── Component ─────────────── */
 const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
-  // 먼저 config 이미지를 즉시 보여주고, API가 오면 교체(초기 체감속도↑)
-  const [images, setImages] = useState<string[]>(weddingConfig.gallery.images);
+  // config에서 직접 이미지 로드 (빠른 초기 렌더링)
+  const [images] = useState<string[]>(weddingConfig.gallery.images);
   const [error, setError] = useState<string | null>(null);
   const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
 
@@ -74,24 +74,6 @@ const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
     });
   };
 
-  // API는 백그라운드로 시도(성공하면 교체, 실패해도 화면은 유지)
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch('/api/gallery');
-        if (!res.ok) return;
-        const data = await res.json();
-        if (!cancelled && Array.isArray(data.images) && data.images.length) {
-          setImages(data.images);
-        }
-      } catch {
-        setError(null); // 조용히 무시
-      }
-    })();
-    return () => { cancelled = true; };
-  }, []);
-
   // 이미지 목록이 로드된 후 즉시 모든 이미지 프리로딩
   useEffect(() => {
     if (!images.length) return;
@@ -116,17 +98,6 @@ const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
     aggressivePreload();
   }, [images]);
 
-  // 컴포넌트 마운트 시 즉시 config 이미지들도 프리로딩
-  useEffect(() => {
-    const configImages = weddingConfig.gallery.images;
-    if (configImages.length > 0) {
-      configImages.forEach((img, index) => {
-        setTimeout(() => {
-          preloadImage(img).catch(() => {});
-        }, index * 100);
-      });
-    }
-  }, []);
 
   // 브라우저 뒤로가기 처리(확대 상태)
   useEffect(() => {
