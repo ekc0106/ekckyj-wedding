@@ -9,7 +9,7 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 768, 1024],
-    minimumCacheTTL: 31536000, // 1년 캐시
+    minimumCacheTTL: 0, // 캐시 비활성화 (즉시 업데이트)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // 더 빠른 로딩을 위한 설정
@@ -63,13 +63,13 @@ const nextConfig = {
           },
         ],
       },
-      // 정적 에셋들 (이미지, 폰트 등)은 장기간 캐시 + 압축
+      // 정적 에셋들 (이미지) - 캐시 무효화로 즉시 업데이트
       {
         source: '/images/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400',
+            value: 'public, max-age=0, must-revalidate',
           },
           {
             key: 'Vary',
