@@ -4,7 +4,6 @@ import { weddingConfig } from "../src/config/wedding-config";
 import StyledComponentsRegistry from "../src/lib/registry";
 import { GlobalStyle } from "../src/styles/globalStyles";
 import AudioPlayer from "../src/components/AudioPlayer";
-import { AudioProvider } from "../src/contexts/AudioContext";
 import "./globals.css";
 
 export default function RootLayout({
@@ -28,11 +27,9 @@ export default function RootLayout({
       </head>
       <body>
         <StyledComponentsRegistry>
-          <AudioProvider>
-            <GlobalStyle />
-            <AudioPlayer />
-            {children}
-          </AudioProvider>
+          <GlobalStyle />
+          <AudioPlayer />
+          {children}
         </StyledComponentsRegistry>
       </body>
     </html>

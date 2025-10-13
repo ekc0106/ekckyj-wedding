@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { useAudio } from "../contexts/AudioContext";
+import { useEffect, useRef, useState } from "react";
 
 export default function AudioPlayer() {
-  const { audioRef, muted, isVideoPlaying, toggleMute } = useAudio();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [muted, setMuted] = useState(false); // 시작은 음소거 해제
 
   useEffect(() => {
-    if (!audioRef) return;
     const audio = audioRef.current;
     if (audio) {
       // 페이지 로드 시 자동재생 시도
@@ -21,42 +20,35 @@ export default function AudioPlayer() {
             audio.play().catch(err => {
               console.warn("재생 실패:", err);
             });
+            setMuted(false);
             document.removeEventListener("click", enableSound);
             document.removeEventListener("touchstart", enableSound);
           };
           document.addEventListener("click", enableSound, { once: true });
           document.addEventListener("touchstart", enableSound, { once: true });
         });
+        setMuted(false);
       };
       
       // 즉시 재생 시도
       playAudio();
     }
-  }, [audioRef]);
+  }, []);
 
-  // 비디오 재생 상태에 따른 오디오 관리 (iOS 대응)
-  useEffect(() => {
-    if (!audioRef) return;
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isVideoPlaying) {
-      // 비디오 재생 시 배경음악 일시정지
-      audio.pause();
-      console.log("비디오 재생 중 - 배경음악 일시정지");
-    } else {
-      // 비디오 정지 시 배경음악 재개 (음소거 상태가 아닐 때만)
-      if (!muted) {
-        // iOS에서 안정적인 재생을 위해 약간의 딜레이 추가
-        setTimeout(() => {
-          audio.play().catch(err => {
-            console.warn("배경음악 재개 실패:", err);
-          });
-          console.log("비디오 정지 - 배경음악 재개");
-        }, 100);
+  const toggleMute = () => {
+    if (audioRef.current) {
+      const newMutedState = !muted;
+      audioRef.current.muted = newMutedState;
+      setMuted(newMutedState);
+      
+      // iOS 대응: 음소거 해제 시 명시적으로 play() 호출
+      if (!newMutedState) {
+        audioRef.current.play().catch(err => {
+          console.warn("재생 실패:", err);
+        });
       }
     }
-  }, [isVideoPlaying, muted, audioRef]);
+  };
 
   return (
     <div style={{ position: "fixed", top: "1rem", left: "1rem", zIndex: 2000 }}>
