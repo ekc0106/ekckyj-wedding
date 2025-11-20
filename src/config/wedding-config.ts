@@ -60,6 +60,7 @@ export const weddingConfig = {
     transportation: {
       subway: "지하철 4호선 고잔역 2번 출구에서\n왼쪽 대로변 따라 200m 전방에 위치(도보 10분)",
       bus: "97번, 98번, 99-1번, 500번 버스 고잔역 뒤 정류장 하차",
+      intercityBus: "안산시외버스터미널 하차 후\n80B버스, 고잔푸르지오3차 정류장 하차\n정류장 맞은편에서 도보 약 6분",
     },
     parking: "건물 주차장 이용 가능 (2시간 무료)",
     // 신랑측 배차 안내
@@ -153,14 +154,14 @@ export const weddingConfig = {
       holder: "김유진",
     },
     groomFather: {
-      bank: "은행명",
-      number: "111-222-333444",
-      holder: "신랑아버지",
+      bank: "국민은행",
+      number: "770001-01-019776",
+      holder: "엄태관",
     },
     groomMother: {
-      bank: "은행명",
-      number: "555-666-777888",
-      holder: "신랑어머니",
+      bank: "농협은행",
+      number: "463131-52-077631",
+      holder: "손덕수",
     },
     brideFather: {
       bank: "은행명",

@@ -231,11 +231,15 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
         <CardTitle>대중교통 안내</CardTitle>
         <TransportItem>
           <TransportLabel>지하철 이용 시</TransportLabel>
-          <TransportText>{weddingConfig.venue.transportation.subway}</TransportText>
+          <TransportText>{formatTextWithLineBreaks(weddingConfig.venue.transportation.subway)}</TransportText>
         </TransportItem>
         <TransportItem>
           <TransportLabel>버스 이용 시</TransportLabel>
-          <TransportText>{weddingConfig.venue.transportation.bus}</TransportText>
+          <TransportText>{formatTextWithLineBreaks(weddingConfig.venue.transportation.bus)}</TransportText>
+        </TransportItem>
+        <TransportItem>
+          <TransportLabel>시외버스 이용 시</TransportLabel>
+          <TransportText>{formatTextWithLineBreaks(weddingConfig.venue.transportation.intercityBus)}</TransportText>
         </TransportItem>
       </TransportCard>
       
