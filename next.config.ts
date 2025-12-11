@@ -19,6 +19,13 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    // Next.js 16에서 쿼리 스트링이 포함된 로컬 이미지 경로 허용
+    localPatterns: [
+      {
+        pathname: '/images/**',
+        search: '**',
+      },
+    ],
   },
   
   // 성능 최적화 설정
