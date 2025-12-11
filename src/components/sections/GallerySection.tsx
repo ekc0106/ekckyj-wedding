@@ -74,28 +74,38 @@ const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
     });
   };
 
-  // 이미지 목록이 로드된 후 즉시 모든 이미지 프리로딩
+  // 이미지 목록이 로드된 후 즉시 모든 이미지 프리로딩 (개선된 버전)
   useEffect(() => {
     if (!images.length) return;
     
     const aggressivePreload = async () => {
-      // 모든 이미지를 동시에 프리로딩 (속도 우선)
-      const allPromises = images.map((img, index) => {
-        // 첫 5개는 즉시, 나머지는 약간의 딜레이
-        const delay = index < 5 ? 0 : index * 50;
+      // 첫 10개는 즉시 프리로딩 (우선순위 높음)
+      const priorityImages = images.slice(0, 10);
+      const remainingImages = images.slice(10);
+      
+      // 우선순위 이미지들을 먼저 로드
+      const priorityPromises = priorityImages.map(img => preloadImage(img));
+      await Promise.allSettled(priorityPromises);
+      
+      // 나머지 이미지들을 백그라운드에서 로드
+      const remainingPromises = remainingImages.map((img, index) => {
         return new Promise(resolve => {
           setTimeout(() => {
             preloadImage(img).then(resolve).catch(resolve);
-          }, delay);
+          }, index * 30); // 더 짧은 딜레이
         });
       });
       
-      await Promise.allSettled(allPromises);
+      await Promise.allSettled(remainingPromises);
       console.log('갤러리 이미지 프리로딩 완료:', preloadedImages.size, '/', images.length);
     };
     
-    // 즉시 시작 (idle 대기 없이)
-    aggressivePreload();
+    // requestIdleCallback 사용으로 메인 스레드 블로킹 방지
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => aggressivePreload());
+    } else {
+      setTimeout(() => aggressivePreload(), 100);
+    }
   }, [images]);
 
 
@@ -278,19 +288,20 @@ const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
           {images.map((image, index) => (
             <GalleryGridCard key={image} onClick={() => handleImageClick(image)}>
               <GalleryGridImageWrapper>
-                <GalleryNextImage
-                  src={image}
-                  alt={`웨딩 갤러리 이미지 ${index + 1}`}
-                  fill
-                  priority={index < 5}
-                  loading="eager"
-                  quality={80}
-                  sizes="(max-width:768px) calc(33.333vw - 0.5rem), 260px"
-                  placeholder="empty"
-                  style={{ objectFit: 'cover' }}
-                  draggable={false}
-                  onContextMenu={e => e.preventDefault()}
-                />
+                  <GalleryNextImage
+                    src={image}
+                    alt={`웨딩 갤러리 이미지 ${index + 1}`}
+                    fill
+                    priority={index < 8} // 더 많은 이미지를 우선순위로
+                    loading={index < 8 ? "eager" : "lazy"}
+                    quality={85} // 품질 약간 향상
+                    sizes="(max-width:768px) calc(33.333vw - 0.5rem), 260px"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                    style={{ objectFit: 'cover' }}
+                    draggable={false}
+                    onContextMenu={e => e.preventDefault()}
+                  />
               </GalleryGridImageWrapper>
             </GalleryGridCard>
           ))}
@@ -309,11 +320,12 @@ const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
                     src={image}
                     alt={`웨딩 갤러리 이미지 ${index + 1}`}
                     fill
-                    priority={index < 5}
-                    loading="eager"
-                    quality={80}
+                    priority={index < 6} // 스크롤 갤러리에서도 더 많은 우선순위
+                    loading={index < 6 ? "eager" : "lazy"}
+                    quality={85}
                     sizes="(max-width:768px) 250px, 300px"
-                    placeholder="empty"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                     style={{ objectFit: 'cover' }}
                     draggable={false}
                     onContextMenu={e => e.preventDefault()}
@@ -356,16 +368,16 @@ const GallerySection = ({ bgColor = 'white' }: GallerySectionProps) => {
                 priority
                 quality={95}
                 sizes="100vw"
-                placeholder="blur"
+                placeholder={preloadedImages.has(expandedImage) ? "empty" : "blur"}
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-                // style={{ objectFit: 'contain', background: 'transparent' }}
+                unoptimized={false} // Next.js 최적화 사용
                 style={{ 
                   objectFit: 'contain', 
                   background: 'transparent',
-                  pointerEvents: 'none'   // ✅ 확대/줌/드래그 불가
+                  pointerEvents: 'none'
                 }}
-                draggable={false}          // ✅ 드래그 방지
-                onContextMenu={e => e.preventDefault()} // ✅ 우클릭 방지
+                draggable={false}
+                onContextMenu={e => e.preventDefault()}
                 onLoad={handleExpandedImageLoad}
                 onError={handleExpandedImageError}
               />
