@@ -88,20 +88,21 @@ export const weddingConfig = {
     layout: "grid" as GalleryLayout, // "scroll" 또는 "grid" 선택
     position: "middle" as GalleryPosition, // "middle" (현재 위치) 또는 "bottom" (맨 하단) 선택
     images: [
-      "/images/gallery/01.JPG?v=3",
-      "/images/gallery/01_1.jpg?v=3",
-      "/images/gallery/02.JPG?v=3",
-      "/images/gallery/02_1.jpg?v=3",
-      "/images/gallery/02_2.jpg?v=3",
-      "/images/gallery/03.JPG?v=3",
-      "/images/gallery/04.JPG?v=3",
-      "/images/gallery/05.jpg?v=3",
-      "/images/gallery/06.JPG?v=3",
-      "/images/gallery/07.JPG?v=3",
-      "/images/gallery/08.JPG?v=3",
-      "/images/gallery/08_1.jpg?v=3",
-      "/images/gallery/09.JPG?v=3",
-      "/images/gallery/09_1.jpg?v=3",
+      "/images/gallery/02.JPG?v=3", // 1
+      "/images/gallery/06.JPG?v=3", // 2
+      "/images/gallery/03.JPG?v=3", //  3
+      "/images/gallery/02_2.jpg?v=3", //  4
+      "/images/gallery/05.jpg?v=3", // 5
+      "/images/gallery/05-2.jpg?v=3", // 5-2
+      "/images/gallery/07.JPG?v=3", // 6
+      "/images/gallery/01.JPG?v=3", // 7
+      "/images/gallery/04.JPG?v=3", //  8 
+      "/images/gallery/01_1.jpg?v=3", // 9 
+      "/images/gallery/02_1.jpg?v=3", // 10 
+      "/images/gallery/08_1.jpg?v=3", // 11
+      "/images/gallery/08.JPG?v=3", // 12
+      "/images/gallery/09_1.jpg?v=3", // 13
+      "/images/gallery/09.JPG?v=3", // 14
       "/images/gallery/1756601780420-0.jpg?v=3",
       "/images/gallery/1756601780420-26.jpg?v=3",
       "/images/gallery/1756601785429-20.jpg?v=3",

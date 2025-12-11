@@ -20,15 +20,6 @@ const VideoSection = ({ bgColor = 'white' }: VideoSectionProps) => {
     setIsVideoLoaded(true);
   };
 
-  // 전체화면 버튼 클릭 핸들러
-  const handleFullscreen = () => {
-    const videoId = weddingConfig.video.url.split('/').pop()?.split('?')[0];
-    if (videoId) {
-      // Vimeo 원본 페이지로 이동 (전체화면 지원)
-      window.open(`https://vimeo.com/${videoId}`, '_blank');
-    }
-  };
-
   // Vimeo iframe이 로드되지 않는 경우를 대비한 타이머
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,21 +49,16 @@ const VideoSection = ({ bgColor = 'white' }: VideoSectionProps) => {
           
           <VideoContainer>
             <VideoIframe
-              src={`${weddingConfig.video.url}?autoplay=0&loop=0&muted=0&controls=1&responsive=1&fullscreen=1&portrait=0&byline=0&title=0`}
+              src={`${weddingConfig.video.url}?autoplay=0&loop=0&muted=0&controls=1&responsive=1`}
               title="웨딩 영상"
               frameBorder="0"
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
               allowFullScreen
               onLoad={handleVideoLoad}
               onError={() => setIsVideoLoaded(true)}
               style={{ opacity: isVideoLoaded ? 1 : 0 }}
               loading="lazy"
             />
-            
-            {/* 카카오톡 인앱브라우저용 전체화면 버튼 */}
-            <FullscreenButton onClick={handleFullscreen} title="전체화면으로 보기">
-              <FullscreenIcon>⛶</FullscreenIcon>
-            </FullscreenButton>
           </VideoContainer>
         </VideoWrapper>
         
@@ -193,46 +179,6 @@ const VideoCaption = styled.p`
   
   @media (max-width: 768px) {
     font-size: 0.9rem;
-  }
-`;
-
-const FullscreenButton = styled.button`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.7);
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  
-  &:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: scale(1.05);
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
-  
-  @media (max-width: 768px) {
-    top: 8px;
-    right: 8px;
-    padding: 6px 10px;
-  }
-`;
-
-const FullscreenIcon = styled.span`
-  color: white;
-  font-size: 1.2rem;
-  display: block;
-  line-height: 1;
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
   }
 `;
 
