@@ -4,9 +4,12 @@ const nextConfig = {
     styledComponents: true,
   },
   
-  // 이미지 최적화 설정 (Next.js 16 호환성 문제로 비활성화)
+  // 이미지 최적화 설정 (Next.js 15에서 완벽하게 작동)
   images: {
-    unoptimized: true, // 이미지 최적화 비활성화 (안정성 우선)
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 768, 1024],
+    minimumCacheTTL: 3600, // 1시간 캐시 (성능 향상)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
