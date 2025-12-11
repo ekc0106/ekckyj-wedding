@@ -18,6 +18,7 @@ export const weddingConfig = {
     ogImage: "/images/thumbnail.jpg",
     noIndex: true,
     _jwk_watermark_id: uniqueIdentifier,
+    _deployment_trigger: "2025-12-11-17:30", // Vercel 배포 강제 트리거
   },
 
   // 메인 화면
