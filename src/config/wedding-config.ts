@@ -62,7 +62,7 @@ export const weddingConfig = {
       bus: "97번, 98번, 99-1번, 500번 버스 고잔역 뒤 정류장 하차",
       intercityBus: "안산시외버스터미널 하차 후\n80B버스, 고잔푸르지오3차 정류장 하차\n정류장 맞은편에서 도보 약 6분",
     },
-    parking: "건물 주차장 이용 가능 (2시간 무료)",
+    parking: "건물 맞은편 주차타워 이용 가능 (2시간 무료) 또는 고잔역 공영 주차장 이용가능",
     // 신랑측 배차 안내
     groomShuttle: {
       location: "신랑측 배차 출발지",
@@ -103,25 +103,43 @@ export const weddingConfig = {
       "/images/gallery/08.JPG?v=3", // 12
       "/images/gallery/09_1.jpg?v=3", // 13
       "/images/gallery/09.JPG?v=3", // 14
-      "/images/gallery/1756601780420-0.jpg?v=3",
-      "/images/gallery/1756601780420-26.jpg?v=3",
-      "/images/gallery/1756601785429-20.jpg?v=3",
-      "/images/gallery/1756601785429-21.jpg?v=3",
-      "/images/gallery/1756601785429-25.jpg?v=3",
-      "/images/gallery/1756601785429-26.jpg?v=3",
-      "/images/gallery/1756601793531-0.jpg?v=3",
-      "/images/gallery/1756601793531-1.jpg?v=3",
-      "/images/gallery/1756601793531-10.jpg?v=3",
-      "/images/gallery/1756601793531-15.jpg?v=3",
-      "/images/gallery/1756601793531-21.jpg?v=3",
-      "/images/gallery/1756601793531-4.jpg?v=3",
-      "/images/gallery/1756601797784-1.jpg?v=3",
-      "/images/gallery/KakaoTalk_20250824_033920236_08.jpg?v=3",
-      "/images/gallery/KakaoTalk_20250824_033920236_17.jpg?v=3",
-      "/images/gallery/KakaoTalk_20250824_033920236_18.jpg?v=3",
-      "/images/gallery/KakaoTalk_20250824_034620677_03.jpg?v=3",
-      "/images/gallery/KakaoTalk_20250824_034620677_06.jpg?v=3",
-      "/images/gallery/KakaoTalk_20250824_034620677_08.jpg?v=3",
+      "/images/gallery/JJY02448.jpg?v=3", // 1
+      "/images/gallery/JJY02526.jpg?v=3", // 2
+      "/images/gallery/JJY02708.jpg?v=3", // 3
+      "/images/gallery/JJY02180.jpg?v=3", // 4
+      "/images/gallery/JJY02271.jpg?v=3", // 5
+      "/images/gallery/JJY02402.jpg?v=3", // 6
+      "/images/gallery/1756601785429-26.jpg?v=3", // 7
+      "/images/gallery/JJY03257.jpg?v=3", // 8
+      "/images/gallery/JJY03418.jpg?v=3", // 9
+      "/images/gallery/JJY03592.jpg?v=3", // 10
+      "/images/gallery/JJY03660.jpg?v=3", // 11
+      "/images/gallery/JJY03959.jpg?v=3", // 12
+      "/images/gallery/MSH02638.jpg?v=3", // 13
+      "/images/gallery/MSH02645.jpg?v=3", // 14
+      "/images/gallery/MSH02828.jpg?v=3", // 15
+      "/images/gallery/MSH03029.jpg?v=3", // 16
+      "/images/gallery/MSH03093.jpg?v=3", // 17
+      "/images/gallery/MSH03253.jpg?v=3", // 18
+      // "/images/gallery/1756601780420-0.jpg?v=3",
+      // "/images/gallery/1756601780420-26.jpg?v=3",
+      // "/images/gallery/1756601785429-20.jpg?v=3",
+      // "/images/gallery/1756601785429-21.jpg?v=3",
+      // "/images/gallery/1756601785429-25.jpg?v=3",
+      // "/images/gallery/1756601785429-26.jpg?v=3",
+      // "/images/gallery/1756601793531-0.jpg?v=3",
+      // "/images/gallery/1756601793531-1.jpg?v=3",
+      // "/images/gallery/1756601793531-10.jpg?v=3",
+      // "/images/gallery/1756601793531-15.jpg?v=3",
+      // "/images/gallery/1756601793531-21.jpg?v=3",
+      // "/images/gallery/1756601793531-4.jpg?v=3",
+      // "/images/gallery/1756601797784-1.jpg?v=3",
+      // "/images/gallery/KakaoTalk_20250824_033920236_08.jpg?v=3",
+      // "/images/gallery/KakaoTalk_20250824_033920236_17.jpg?v=3",
+      // "/images/gallery/KakaoTalk_20250824_033920236_18.jpg?v=3",
+      // "/images/gallery/KakaoTalk_20250824_034620677_03.jpg?v=3",
+      // "/images/gallery/KakaoTalk_20250824_034620677_06.jpg?v=3",
+      // "/images/gallery/KakaoTalk_20250824_034620677_08.jpg?v=3",
     ],
   } as GalleryConfig,
 
@@ -170,7 +188,7 @@ export const weddingConfig = {
       holder: "김범",
     },
     brideMother: {
-      bank: "농협은행",
+      bank: "신한은행",
       number: "110-357-545498",
       holder: "이향옥",
     }
@@ -179,8 +197,8 @@ export const weddingConfig = {
   // 동영상 설정
   video: {
     enabled: true, // 동영상 섹션 표시 여부
-    // url: "https://player.vimeo.com/video/1115881517", // Vimeo 임베드 URL
-    url: "https://player.vimeo.com/video/1145622775", // Vimeo 임베드 URL
+    url: "https://player.vimeo.com/video/1115881517", // Vimeo 임베드 URL
+    // url: "https://player.vimeo.com/video/1145622775", // Vimeo 임베드 URL
     title: "💕 2017.06.22 ~ 💕",
     description: "",
   },
