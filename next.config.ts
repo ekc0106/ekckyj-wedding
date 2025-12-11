@@ -4,26 +4,15 @@ const nextConfig = {
     styledComponents: true,
   },
   
-  // 이미지 최적화 설정 (압축된 이미지에 최적화)
+  // 이미지 최적화 설정 (Next.js 16 호환성을 위해 임시로 비활성화)
   images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 768, 1024],
-    minimumCacheTTL: 0, // 캐시 비활성화 (즉시 업데이트)
+    unoptimized: true, // 이미지 최적화 비활성화 (Next.js 16 호환성 문제 해결)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // 더 빠른 로딩을 위한 설정
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
-      },
-    ],
-    // Next.js 16에서 쿼리 스트링이 포함된 로컬 이미지 경로 허용
-    localPatterns: [
-      {
-        pathname: '/images/**',
-        search: '**',
       },
     ],
   },
