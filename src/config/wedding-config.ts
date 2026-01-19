@@ -146,7 +146,7 @@ export const weddingConfig = {
 
   // 초대의 말씀
   invitation: {
-    message:  "학교에서 선후배로 만나\n사랑으로 이어진 지 아홉 해.\n\n그 소중한 시간이 쌓여\n이제는 부부로서 첫 발걸음을 내딛습니다.\n\저희의 첫걸음을 지켜봐 주신다면\n더없는 행복으로 간직하겠습니다.",
+    message: "학교에서 선후배로 만나\n사랑으로 이어진 지 아홉 해.\n\n그 소중한 시간이 쌓여\n이제는 부부로서 첫 발걸음을 내딛습니다.\n\저희의 첫걸음을 지켜봐 주신다면\n더없는 행복으로 간직하겠습니다.",
     groom: {
       name: "엄규철",
       label: "아들",
@@ -164,8 +164,8 @@ export const weddingConfig = {
   // 계좌번호
   account: {
     groom: {
-      bank: "우리은행",
-      number: "1002-247-991527",
+      bank: "카카오뱅크",
+      number: "3333-10-6144288",
       holder: "엄규철",
     },
     bride: {
